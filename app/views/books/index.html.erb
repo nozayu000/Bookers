@@ -12,125 +12,40 @@
   <body>
     <p id="notice"></p>
 
-<h1>Books</h1>
+<h3>Books</h3>
 
 <table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Body</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-      <tr>
-        <td><%= f.text_field :title %></td>
-        <td><%= f.text_area :body %></td>
-        <td><a class="show_22014" href="/books/22014">Show</a></td>
-        <%= link_to "Edit", edit_book_path(@book) %>
-        <%= link_to "Back", book_path(@book), method: :delete %>
-        
-        
-        <td><a data-confirm="Are you sure?" class="destroy_22014" rel="nofollow" data-method="delete" href="/books/22014">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>トラブル知らずのシステム設計</td>
-        <td>システム設計の要点を図解で説明してくれます</td>
-        <td><a class="show_22015" href="/books/22015">Show</a></td>
-        <td><a class="edit_22015" href="/books/22015/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_22015" rel="nofollow" data-method="delete" href="/books/22015">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>たのしいRuby</td>
-        <td>Rubyの入門におすすめです</td>
-        <td><a class="show_22016" href="/books/22016">Show</a></td>
-        <td><a class="edit_22016" href="/books/22016/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_22016" rel="nofollow" data-method="delete" href="/books/22016">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>入門Git</td>
-        <td>gitについての基本操作から内部構造まで解説してくれます</td>
-        <td><a class="show_22017" href="/books/22017">Show</a></td>
-        <td><a class="edit_22017" href="/books/22017/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_22017" rel="nofollow" data-method="delete" href="/books/22017">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>アルゴリズム図鑑</td>
-        <td>アルゴリズムについてカラーイラストでしっかり解説してくれます</td>
-        <td><a class="show_22018" href="/books/22018">Show</a></td>
-        <td><a class="edit_22018" href="/books/22018/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_22018" rel="nofollow" data-method="delete" href="/books/22018">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>達人プログラマー</td>
-        <td>プログラマ入門者は必読！</td>
-        <td><a class="show_22019" href="/books/22019">Show</a></td>
-        <td><a class="edit_22019" href="/books/22019/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_22019" rel="nofollow" data-method="delete" href="/books/22019">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>データベース実践入門</td>
-        <td>効率的なSQL文を教えてくれます</td>
-        <td><a class="show_22020" href="/books/22020">Show</a></td>
-        <td><a class="edit_22020" href="/books/22020/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_22020" rel="nofollow" data-method="delete" href="/books/22020">Destroy</a></td>
-      </tr>
-  </tbody>
+    <thead>
+        <tr>
+            <th>title</th>
+            <th>body</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @books.each do |book| %>
+        <tr>
+            <td><%= book.title %></td>
+            <td><%= book.body %></td>
+            <td><%= link_to "show", book_path(book.id) %></td>
+            <td><%= link_to "edit", edit_book_path(book.id) %></td>
+            <td><%= link_to "destroy", destroy_book_path(book.id), method: :delete,"data-confirm" => "Are you sure?" %></td>
+        </tr>
+        <% end %>
+    </tbody>
 </table>
 
+<h3>New book</h3>
+<% if @book.errors.any? %>
+    ul{<% @book.errors.full_messages.each do |message| %>}
+<%= form_for(@book) do |f| %>
 
-<h2>New book</h2>
-<form class="new_book" id="new_book" action="/books" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="mlelFWO7oab19KPTxb8HnKrQt8rugNBbGEskVO4KW09epNgi2GspQcmMtPFDKmc3ep2tRcPPSumwqqawMU5uzQ==" />
-    <div id="error_explanation">
-      <h2>2 errors prohibited this book from being saved:</h2>
+    <%= f.label :Title %><br/>
+    <%= f.text_field :title %>
 
-      <ul>
-        <li>Title can&#39;t be blank</li>
-        <li>Body can&#39;t be blank</li>
-      </ul>
-    </div>
+    <h4>Body</h4>
+    <%= f.text_area :body %>
 
-  <div class="field">
-    <div class="field_with_errors"><label for="book_title">Title</label></div>
-    <div class="field_with_errors"><input class="book_title" type="text" value="" name="book[title]" id="book_title" /></div>
-  </div>
+    <br><%= f.submit 'Create Book' %></br>
 
-  <div class="field">
-    <div class="field_with_errors"><label for="book_body">Body</label></div>
-    <div class="field_with_errors"><textarea class="book_body" name="book[body]" id="book_body">
-</textarea></div>
-  </div>
-
-  <div class="actions">
-    <input type="submit" name="commit" value="Create Book" data-disable-with="Create Book" />
-  </div>
-</form>
-  </body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <% @books.each do |books| %>
-        <div class="blog-item">
-          <section class="blog-text">
-            <h3 class="blog-text-heading"><%= link_to books.title, books_path(book) %></h3>
-            <p class="blog-date"><%= book.created_at %></p>
-          </section>
-        </div>
-  <% end %>
+<% end %>
