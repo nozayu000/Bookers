@@ -1,26 +1,41 @@
 class BooksController < ApplicationController
-  def index
-    @books = Book.all
-    @book = Book.new(book_params)
-    # @book = Book.new(book_path)
-  end
+# before_action :set_book, only: [:show, :edit, :update, :destroy]
+
 
   def show
-     @book = Book.find(params[:id])
+    @book = Book.find(params[:id])
   end
+
+
+  def index
+    @books = Book.all
+    @book = Book.new(book_path)
+    # @book = Book.new(book_params)
+  end
+
+
+def new
+  @book = Book.new
+end
+
+
 
   def create
     @book = Book.new(book_params)
     if @book.save
-      redirect_to book_path(@book)
-      # redirect_to todolist_path(@list.id)
+      redirect_to book_path(@book.id), notice: "successfully created book!"
     else
-      render :book_path
-      # indexアクション
-      # render :new
-      # newアクション（アクション呼び出し）を実行しているわけではない。new.html.erbを表示しているだけ
+      render 'index'
     end
   end
+
+  # def update
+  #   if @book.update()
+  #     redirect_to book_path(@book), notice: "successfully updated book!"
+  #   else
+  #     render 'edit'
+  #   end
+  # end
 
   def update
     @book = Book.find(params[:id])
@@ -30,20 +45,26 @@ class BooksController < ApplicationController
     # redirect_to book_path(book.id)
   end
 
-
-
   def edit
     @book = Book.find(params[:id])
   end
 
+  
   def destroy
-    @book = Book.find(params[:id])
-    @book.destroy
-    redirect_to books_path  
+  @book = Book.find(params[:id])
+  @book.destroy
+  redirect_to books_path  
   end
+
+  
+  # def destroy
+  #     @book.destroy
+  #     redirect_to books_path, notice: "successfully delete book!"
+  # end
   
   private
+
   def book_params
-    params.require(:book).permit(:title, :body)
+      params.require(:book).permit(:title, :body)
   end
 end

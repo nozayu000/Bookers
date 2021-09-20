@@ -15,6 +15,6 @@ put 'books/:id' => 'books#update'
 delete 'books/:id' => 'books#destroy'
 # delete 'todolists/:id' => 'todolists#destroy', as: 'destroy_todolist'
   
-    
+get 'books/new'    
     
 end
